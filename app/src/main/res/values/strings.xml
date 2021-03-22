@@ -1,20 +1,21 @@
 <resources>
-    <string name="app_name">Андроид 1 ДЗ №1</string>
-    <string name="text_name">Атрибуты EditText</string>
-    <string name="plain_text">Просто текст</string>
-    <string name="text_label">Атрибуты EditText</string>
-    <string name="pswd_text">password123</string>
-    <string name="phone_text">+7 999 12 34 567</string>
-    <string name="number_text">1234567890</string>
-    <string name="mail_text">ivan123@mail.ru</string>
-    <string name="date_text">17/3/2021</string>
-    <string name="buttonBack_text">Обратно</string>
-    <string name="main_label">Пользовательские элементы</string>
-    <string name="edit1_text">Привет</string>
-    <string name="edit2_text">Андроид!</string>
-    <string name="check_text">Поставь птичку</string>
-    <string name="toggle_text">ToggleButton</string>
-    <string name="buttonNext_text">Далее</string>
-    <string name="person_text">Иван Иванов</string>
-    <string name="switch_text">Переключи</string>
+    <string name="app_name">Калькулятор</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="_7">7</string>
+    <string name="_8">8</string>
+    <string name="_9">9</string>
+    <string name="_0">0</string>
+    <string name="point">.</string>
+    <string name="equal">=</string>
+    <string name="div">/</string>
+    <string name="mul">*</string>
+    <string name="sub">-</string>
+    <string name="add">+</string>
+    <string name="cancel">C</string>
+    <string name="background">background</string>
 </resources>

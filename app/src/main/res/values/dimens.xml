@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-        <dimen name="text_height">44dp</dimen>
-        <dimen name="text_width">186dp</dimen>
-        <dimen name="margin_left">20dp</dimen>
-        <dimen name="margin_right">20dp</dimen>
-        <dimen name="text_size">20sp</dimen>
+        <dimen name="button_text">40sp</dimen>
+        <dimen name="margin_button">2dp</dimen>
+        <dimen name="vertical_bias">0.6</dimen>
 </resources>
