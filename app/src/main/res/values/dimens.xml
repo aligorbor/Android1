@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <dimen name="button_text">40sp</dimen>
+        <dimen name="margin_button">2dp</dimen>
+        <dimen name="vertical_bias">0.5</dimen>
+        <dimen name="horizontal_bias">0.9</dimen>
+</resources>
