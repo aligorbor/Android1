@@ -18,4 +18,7 @@
     <string name="add">+</string>
     <string name="cancel">C</string>
     <string name="background">background</string>
+    <string name="decimalFormat">#.##########</string>
+    <string name="err_zero_div">деление на 0</string>
+
 </resources>
