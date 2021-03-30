@@ -13,13 +13,13 @@ import java.util.Locale;
 
 public class Calc implements Parcelable {
     public static AppCompatActivity activity;
-    private final char ADD;
-    private final char SUBTRACT;
-    private final char MULTIPLY;
-    private final char DIVIDE;
-    private final char EQUAL;
+    private static final char ADD = '+';
+    private static final char SUBTRACT = '-';
+    private static final char MULTIPLY = '*';
+    private static final char DIVIDE = '/';
+    private static final char EQUAL = '=';
     private final char CANCEL;
-    private final char N0;
+    private static final char N0 = '0';
     private final char NPoint;
 
     private String valueOne;
@@ -31,13 +31,7 @@ public class Calc implements Parcelable {
     private DecimalFormat decimalFormat;
 
     public Calc() {
-        N0 = activity.getString(R.string._0).charAt(0);
         NPoint = activity.getString(R.string.point).charAt(0);
-        ADD = activity.getString(R.string.add).charAt(0);
-        SUBTRACT = activity.getString(R.string.sub).charAt(0);
-        MULTIPLY = activity.getString(R.string.mul).charAt(0);
-        DIVIDE = activity.getString(R.string.div).charAt(0);
-        EQUAL = activity.getString(R.string.equal).charAt(0);
         CANCEL = activity.getString(R.string.cancel).charAt(0);
 
         strFormula = "";
@@ -50,13 +44,7 @@ public class Calc implements Parcelable {
     }
 
     protected Calc(Parcel in) {
-        ADD = (char) in.readInt();
-        SUBTRACT = (char) in.readInt();
-        MULTIPLY = (char) in.readInt();
-        DIVIDE = (char) in.readInt();
-        EQUAL = (char) in.readInt();
         CANCEL = (char) in.readInt();
-        N0 = (char) in.readInt();
         NPoint = (char) in.readInt();
         valueOne = in.readString();
         valueTwo = in.readString();
@@ -76,13 +64,7 @@ public class Calc implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt((int) ADD);
-        dest.writeInt((int) SUBTRACT);
-        dest.writeInt((int) MULTIPLY);
-        dest.writeInt((int) DIVIDE);
-        dest.writeInt((int) EQUAL);
         dest.writeInt((int) CANCEL);
-        dest.writeInt((int) N0);
         dest.writeInt((int) NPoint);
         dest.writeString(valueOne);
         dest.writeString(valueTwo);
@@ -125,8 +107,12 @@ public class Calc implements Parcelable {
     private void fill() {
         if (Character.isDigit(currentChar) || currentChar == NPoint) {
             if (currentAction == N0) {
-                valueOne = tryDigit(valueOne, currentChar);
-                strFormula = "";
+                if (strFormula.isEmpty())
+                    valueOne = tryDigit(valueOne, currentChar);
+                else {
+                    valueOne = tryDigit("", currentChar);
+                    strFormula = "";
+                }
                 strValue = valueOne;
             } else {
                 valueTwo = tryDigit(valueTwo, currentChar);
@@ -137,9 +123,11 @@ public class Calc implements Parcelable {
             if (valueTwo.isEmpty()) {
                 if (currentChar != EQUAL) {
                     currentAction = currentChar;
+                    valueOne = toStrDecimalFormat(valueOne);
                     strFormula = valueOne + currentAction;
                 }
             } else {
+                valueTwo = toStrDecimalFormat(valueTwo);
                 doCalc(currentChar);
             }
         } else if (currentChar == CANCEL) {
@@ -167,20 +155,26 @@ public class Calc implements Parcelable {
             Log.i("Calc", e.getMessage());
         }
 
-        double result = 0.;
-        if (currentAction == ADD)
-            result = v1 + v2;
-        else if (currentAction == SUBTRACT)
-            result = v1 - v2;
-        else if (currentAction == MULTIPLY)
-            result = v1 * v2;
-        else if (currentAction == DIVIDE) {
-            if (v2 == 0)
-                result = Double.NaN;
-            else
-                result = v1 / v2;
+        double result;
+        switch (currentAction) {
+            case ADD:
+                result = v1 + v2;
+                break;
+            case SUBTRACT:
+                result = v1 - v2;
+                break;
+            case MULTIPLY:
+                result = v1 * v2;
+                break;
+            case DIVIDE:
+                if (v2 == 0)
+                    result = Double.NaN;
+                else
+                    result = v1 / v2;
+                break;
+            default:
+                result = 0.;
         }
-
 
         if (Double.isNaN(result)) {
             valueOne = Character.toString(N0);
@@ -192,17 +186,14 @@ public class Calc implements Parcelable {
             String strRes = decimalFormat.format(result);
             if (newAction == EQUAL) {
                 strFormula = valueOne + currentAction + valueTwo + newAction;
-                strValue = strRes;
-                valueOne = strRes;
                 currentAction = N0;
-                valueTwo = "";
             } else {
                 strFormula = strRes + newAction;
-                strValue = strRes;
-                valueOne = strRes;
                 currentAction = newAction;
-                valueTwo = "";
             }
+            strValue = strRes;
+            valueOne = strRes;
+            valueTwo = "";
         }
     }
 
@@ -212,19 +203,31 @@ public class Calc implements Parcelable {
             newValue = Character.toString(N0) + chToAdd;
         else
             newValue = strValue + chToAdd;
+        String strDecimal = toStrDecimalFormat(newValue);
+        if (strDecimal.isEmpty())
+            return strValue;
+
+        if (chToAdd == NPoint && strValue.indexOf(NPoint) < 0)
+            return strDecimal + NPoint;
+        else if (chToAdd == N0 && strValue.indexOf(NPoint) > 0)
+            return newValue;
+        else
+            return strDecimal;
+    }
+
+    private String toStrDecimalFormat(String strValue) {
+        if (strValue.isEmpty())
+            strValue = Character.toString(N0);
         double v = 0;
         try {
-            Number n = decimalFormat.parse(newValue);
+            Number n = decimalFormat.parse(strValue);
             if (n != null)
                 v = n.doubleValue();
-            // v = Double.parseDouble(newValue);
+
         } catch (NumberFormatException | ParseException e) {
-            return strValue;
+            return "";
         }
-        if (chToAdd == NPoint && strValue.indexOf(NPoint) < 0)
-            return decimalFormat.format(v) + NPoint;
-        else
-            return decimalFormat.format(v);
+        return decimalFormat.format(v);
     }
 
 }

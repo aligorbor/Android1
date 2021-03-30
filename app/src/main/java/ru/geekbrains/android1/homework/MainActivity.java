@@ -2,12 +2,17 @@ package ru.geekbrains.android1.homework;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private final static String keyCounters = "Calc";
@@ -22,44 +27,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (savedInstanceState == null)
             calc = new Calc();
         initButtonListener();
+        setSwitchBehavior();
     }
 
     private void initButtonListener() {
-        Button button0 = findViewById(R.id.button0);
-        Button button1 = findViewById(R.id.button1);
-        Button button2 = findViewById(R.id.button2);
-        Button button3 = findViewById(R.id.button3);
-        Button button4 = findViewById(R.id.button4);
-        Button button5 = findViewById(R.id.button5);
-        Button button6 = findViewById(R.id.button6);
-        Button button7 = findViewById(R.id.button7);
-        Button button8 = findViewById(R.id.button8);
-        Button button9 = findViewById(R.id.button9);
-        Button buttonPoint = findViewById(R.id.buttonPoint);
-        Button buttonEqual = findViewById(R.id.buttonEqual);
-        Button buttonDiv = findViewById(R.id.buttonDiv);
-        Button buttonMul = findViewById(R.id.buttonMul);
-        Button buttonSub = findViewById(R.id.buttonSub);
-        Button buttonAdd = findViewById(R.id.buttonAdd);
-        Button buttonCancel = findViewById(R.id.buttonCancel);
+        int[] numberButtonIds = new int[]{R.id.button0, R.id.button1, R.id.button2, R.id.button3, R.id.button4,
+                R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9,
+                R.id.buttonPoint, R.id.buttonEqual, R.id.buttonDiv, R.id.buttonMul,
+                R.id.buttonSub, R.id.buttonAdd, R.id.buttonCancel};
 
-        button0.setOnClickListener(this);
-        button1.setOnClickListener(this);
-        button2.setOnClickListener(this);
-        button3.setOnClickListener(this);
-        button4.setOnClickListener(this);
-        button5.setOnClickListener(this);
-        button6.setOnClickListener(this);
-        button7.setOnClickListener(this);
-        button8.setOnClickListener(this);
-        button9.setOnClickListener(this);
-        buttonPoint.setOnClickListener(this);
-        buttonEqual.setOnClickListener(this);
-        buttonDiv.setOnClickListener(this);
-        buttonMul.setOnClickListener(this);
-        buttonSub.setOnClickListener(this);
-        buttonAdd.setOnClickListener(this);
-        buttonCancel.setOnClickListener(this);
+        for (int numberButtonId : numberButtonIds)
+            findViewById(numberButtonId).setOnClickListener(this);
     }
 
     @Override
@@ -91,5 +69,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textFormula.setText(calc.getStrFormula());
         textValue.setText(calc.getStrValue());
     }
+
+    private void setSwitchBehavior() {
+        SwitchMaterial switchDark = findViewById(R.id.switchDark);
+        SwitchMaterial switchImage = findViewById(R.id.switchImage);
+        ImageView imageView = findViewById(R.id.imageView);
+
+        switchDark.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            else
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        });
+        switchImage.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked)
+                imageView.setImageResource(R.drawable.background1);
+            else
+                imageView.setImageResource(0);
+        });
+    }
+
 
 }
