@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Calculator</string>
+    <string name="app_name">Калькулятор</string>
     <string name="_1">1</string>
     <string name="_2">2</string>
     <string name="_3">3</string>
@@ -19,11 +20,10 @@
     <string name="cancel">C</string>
     <string name="background">background</string>
     <string name="decimalFormat">#.##########</string>
-    <string name="err_zero_div">division by zero</string>
-    <string name="dark">Dark</string>
-    <string name="image">Image</string>
-    <string name="back">Back</string>
+    <string name="err_zero_div">деление на 0</string>
+    <string name="dark">Темная тема</string>
+    <string name="image">Картинка</string>
+    <string name="back">Назад</string>
     <string name="settings">...</string>
-    <string name="precision">Precision from 1 to 10</string>
-
+    <string name="precision">Точность от 1 до 10</string>
 </resources>

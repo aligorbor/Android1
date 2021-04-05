@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/background"
         android:scaleType="centerCrop"
-
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
@@ -30,10 +29,10 @@
 
     <EditText
         android:id="@+id/textValue"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_button"
-        android:ems="7"
+        android:layout_marginEnd="@dimen/margin_button"
+        android:ems="6"
         android:enabled="false"
         android:inputType="numberDecimal"
         android:text="@string/_0"
@@ -41,9 +40,9 @@
         android:textColor="@color/result"
         android:textSize="@dimen/text_size"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/button7"
-        app:layout_constraintEnd_toEndOf="@+id/buttonDiv"
-        app:layout_constraintStart_toStartOf="@+id/button7" />
+        app:layout_constraintBottom_toBottomOf="@+id/button4"
+        app:layout_constraintEnd_toStartOf="@+id/button4"
+        app:layout_constraintTop_toTopOf="@+id/button4" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button7"
@@ -51,6 +50,7 @@
         android:text="@string/_7"
         app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toStartOf="@+id/button8"
+        app:layout_constraintHorizontal_bias="@fraction/horizontal_bias"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -87,7 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/button9"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="@fraction/vertical_bias"
+        app:layout_constraintVertical_bias="@dimen/vertical_bias"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <com.google.android.material.button.MaterialButton
@@ -96,6 +96,7 @@
         android:text="@string/_4"
         app:layout_constraintBottom_toTopOf="@+id/button1"
         app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:layout_constraintHorizontal_bias="@fraction/horizontal_bias"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button7" />
@@ -133,6 +134,7 @@
         android:text="@string/_1"
         app:layout_constraintBottom_toTopOf="@id/button0"
         app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="@fraction/horizontal_bias"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button4" />
@@ -170,6 +172,7 @@
         android:text="@string/_0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonPoint"
+        app:layout_constraintHorizontal_bias="@dimen/horizontal_bias"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button1" />
@@ -205,16 +208,16 @@
         android:id="@+id/buttonCancel"
         style="@style/ButtonStyle"
         android:text="@string/cancel"
-        app:layout_constraintEnd_toEndOf="@+id/buttonAdd"
-        app:layout_constraintStart_toStartOf="@+id/buttonAdd"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAdd" />
+        app:layout_constraintBottom_toBottomOf="@+id/button0"
+        app:layout_constraintEnd_toStartOf="@+id/button0"
+        app:layout_constraintTop_toTopOf="@+id/button0" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonSettings"
         style="@style/ButtonStyle"
         android:text="@string/settings"
-        app:layout_constraintEnd_toEndOf="@+id/button0"
-        app:layout_constraintStart_toStartOf="@+id/button0"
-        app:layout_constraintTop_toBottomOf="@+id/button0" />
+        app:layout_constraintEnd_toStartOf="@id/buttonCancel"
+        app:layout_constraintTop_toTopOf="@id/buttonCancel"
+        app:layout_constraintBottom_toBottomOf="@id/buttonCancel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
