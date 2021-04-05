@@ -28,11 +28,14 @@ public class Calc implements Parcelable {
     private String strFormula;
     private String strValue;
     private char currentChar;
+
+    private String strDecFormat;
     private DecimalFormat decimalFormat;
 
     public Calc() {
         NPoint = activity.getString(R.string.point).charAt(0);
         CANCEL = activity.getString(R.string.cancel).charAt(0);
+        strDecFormat = activity.getString(R.string.decimalFormat);
 
         strFormula = "";
         strValue = Character.toString(N0);
@@ -52,14 +55,24 @@ public class Calc implements Parcelable {
         strFormula = in.readString();
         strValue = in.readString();
         currentChar = (char) in.readInt();
+        strDecFormat = in.readString();
 
+        initDecimalFormat();
+    }
+
+    public void setStrDecFormat(String strDecFormat) {
+        this.strDecFormat = strDecFormat;
         initDecimalFormat();
     }
 
     private void initDecimalFormat() {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.getDefault());
         otherSymbols.setDecimalSeparator(NPoint);
-        decimalFormat = new DecimalFormat(activity.getString(R.string.decimalFormat), otherSymbols);
+        decimalFormat = new DecimalFormat(strDecFormat, otherSymbols);
+    }
+
+    public String getStrDecFormat() {
+        return strDecFormat;
     }
 
     @Override
@@ -72,6 +85,7 @@ public class Calc implements Parcelable {
         dest.writeString(strFormula);
         dest.writeString(strValue);
         dest.writeInt((int) currentChar);
+        dest.writeString(strDecFormat);
     }
 
     @Override
@@ -230,4 +244,32 @@ public class Calc implements Parcelable {
         return decimalFormat.format(v);
     }
 
+    public void parseCalcStr(String calcStr) {
+        if (calcStr != null) {
+            int indexAdd = calcStr.indexOf(ADD);
+            int indexSub = calcStr.indexOf(SUBTRACT);
+            int indexMul = calcStr.indexOf(MULTIPLY);
+            int indexDiv = calcStr.indexOf(DIVIDE);
+            int index = -1;
+            if (indexAdd > 0) {
+                currentAction = ADD;
+                index = indexAdd;
+            }
+            if (indexSub > 0) {
+                currentAction = SUBTRACT;
+                index = indexSub;
+            }
+            if (indexMul > 0) {
+                currentAction = MULTIPLY;
+                index = indexMul;
+            }
+            if (indexDiv > 0) {
+                currentAction = DIVIDE;
+                index = indexDiv;
+            }
+            valueOne = tryDigit(calcStr.substring(0, index).trim(), ' ');
+            valueTwo = tryDigit(calcStr.substring(index + 1).trim(), ' ');
+            setCurrentChar("=");
+        }
+    }
 }

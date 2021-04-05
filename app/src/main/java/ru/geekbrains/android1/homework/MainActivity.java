@@ -1,9 +1,11 @@
 package ru.geekbrains.android1.homework;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,20 +16,45 @@ import android.widget.TextView;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private final static String keyCounters = "Calc";
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, Constants {
     private Calc calc;
+    private CalcSettings calcSettings;
+    private ImageView imageView;
+    private TextView textFormula;
+    private EditText textValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initViews();
 
         Calc.activity = this;
-        if (savedInstanceState == null)
-            calc = new Calc();
+        calc = new Calc();
+
+        calcSettings = new CalcSettings();
+        if (savedInstanceState == null) {
+            calcSettings.setStrDecFormat(calc.getStrDecFormat());
+            calcSettings.getPreferences(this);
+            AppCompatDelegate.setDefaultNightMode(calcSettings.getModeNight());
+            populateSettings();
+        }
         initButtonListener();
-        setSwitchBehavior();
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            calc.parseCalcStr(bundle.getString(CALC_STRING));
+            textFormula.setText(calc.getStrFormula());
+            textValue.setText(calc.getStrValue());
+        }
+    }
+
+    private void initViews() {
+        imageView = findViewById(R.id.imageView);
+        imageView.setTag(0);
+        textFormula = findViewById(R.id.textFormula);
+        textValue = findViewById(R.id.textValue);
     }
 
     private void initButtonListener() {
@@ -38,12 +65,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for (int numberButtonId : numberButtonIds)
             findViewById(numberButtonId).setOnClickListener(this);
+
+        Button buttonSettings = findViewById(R.id.buttonSettings);
+        buttonSettings.setOnClickListener(v -> {
+            Intent runSettings = new Intent(MainActivity.this, SettingsActivity.class);
+            fillCalcSettings();
+            runSettings.putExtra(CALC_SETTINGS, calcSettings);
+            //  startActivity(runSettings);
+            startActivityForResult(runSettings, REQUEST_CODE_SETTING_ACTIVITY);
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode != REQUEST_CODE_SETTING_ACTIVITY) {
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+        if (resultCode == RESULT_OK) {
+            calcSettings = data.getParcelableExtra(CALC_SETTINGS);
+            calcSettings.setPreferences(this);
+            populateSettings();
+        }
+    }
+
+    private void populateSettings() {
+        imageView.setImageResource(calcSettings.getResourceBackground());
+        imageView.setTag(calcSettings.getResourceBackground());
+        calc.setStrDecFormat(calcSettings.getStrDecFormat());
+    }
+
+    private void fillCalcSettings() {
+        calcSettings.setModeNight(AppCompatDelegate.getDefaultNightMode());
+        calcSettings.setResourceBackground((Integer) imageView.getTag());
+        calcSettings.setStrDecFormat(calc.getStrDecFormat());
     }
 
     @Override
     public void onClick(View v) {
-        TextView textFormula = findViewById(R.id.textFormula);
-        EditText textValue = findViewById(R.id.textValue);
         Button b = (Button) v;
         calc.setCurrentChar(b.getText().toString());
         textFormula.setText(calc.getStrFormula());
@@ -54,40 +113,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(keyCounters, calc);
+        outState.putParcelable(keySettings, calcSettings);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         calc = (Calc) savedInstanceState.getParcelable(keyCounters);
+        calcSettings = (CalcSettings) savedInstanceState.getParcelable(keySettings);
         setViews();
     }
 
     private void setViews() {
-        TextView textFormula = findViewById(R.id.textFormula);
-        EditText textValue = findViewById(R.id.textValue);
         textFormula.setText(calc.getStrFormula());
         textValue.setText(calc.getStrValue());
+        populateSettings();
     }
-
-    private void setSwitchBehavior() {
-        SwitchMaterial switchDark = findViewById(R.id.switchDark);
-        SwitchMaterial switchImage = findViewById(R.id.switchImage);
-        ImageView imageView = findViewById(R.id.imageView);
-
-        switchDark.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            else
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        });
-        switchImage.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked)
-                imageView.setImageResource(R.drawable.background1);
-            else
-                imageView.setImageResource(0);
-        });
-    }
-
-
 }

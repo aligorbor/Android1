@@ -22,7 +22,7 @@
         android:layout_marginBottom="@dimen/margin_button"
         android:text=""
         android:textAlignment="textEnd"
-        android:textSize="@dimen/text_size"
+        android:textSize="@dimen/text_size_small"
         app:layout_constraintBottom_toTopOf="@id/textValue"
         app:layout_constraintEnd_toEndOf="@id/textValue"
         app:layout_constraintStart_toStartOf="@id/textValue" />
@@ -212,27 +212,12 @@
         app:layout_constraintEnd_toStartOf="@+id/button0"
         app:layout_constraintTop_toTopOf="@+id/button0" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switchDark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dark"
-        app:layout_constraintBottom_toTopOf="@id/switchImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1"
-        app:layout_constraintVertical_chainStyle="packed" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonSettings"
+        style="@style/ButtonStyle"
+        android:text="@string/settings"
+        app:layout_constraintEnd_toStartOf="@id/buttonCancel"
+        app:layout_constraintTop_toTopOf="@id/buttonCancel"
+        app:layout_constraintBottom_toBottomOf="@id/buttonCancel" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switchImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/image"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/switchDark" />
 </androidx.constraintlayout.widget.ConstraintLayout>
